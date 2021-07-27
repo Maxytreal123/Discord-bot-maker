@@ -161,3 +161,5 @@ class Bot {
       return this.bot.user.avatarURL({ dynamic = true })
    }
 }
+
+module.exports = Bot
