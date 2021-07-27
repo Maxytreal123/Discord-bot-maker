@@ -1,0 +1,29 @@
+{
+  "name": "discord-bot-maker",
+  "version": "1.0.0",
+  "description": "Discord-bot-maker is a Simple Discord Bot Maker That can create bots so easy, it does not steal any thing from your pc or your discord bot application token",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Maxytreal123/Discord-bot-maker.git"
+  },
+  "keywords": [
+    "Discord",
+    "bot",
+    "simple",
+    "discord.js"
+  ],
+  "author": "Maxytreal123",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Maxytreal123/Discord-bot-maker/issues"
+  },
+  "homepage": "https://github.com/Maxytreal123/Discord-bot-maker#readme",
+  "dependencies": {
+    "@discordjs/opus": "^0.5.3",
+    "discord.js": "^12.5.3"
+  }
+}
