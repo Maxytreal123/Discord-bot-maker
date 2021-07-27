@@ -21,15 +21,15 @@ class Bot {
     * @param {*} ActivityName 
     * @param {*} ActivityType 
     */
-   SetActivity(ActivityName = String, ActivityType) {
+   SetActivity = function (ActivityName = String, ActivityType = String) {
       if (!ActivityType) {
          throw new DiscordBotMakerError("Cannot Find Activity Type!");
       } else if (ActivityName == "w" || ActivityType == "W") {
-         this.bot.user.setActivity({ name = ActivityName, type = "WATCHING" });
+         this.bot.user.setActivity({ name = `${ActivityName}`, type = "WATCHING" });
       } else if (ActivityType == "p" || ActivityType == "P") {
-         this.bot.user.setActivity({ name = ActivityName, type = "PLAYING" });
+         this.bot.user.setActivity({ name = `${ActivityName}`, type = "PLAYING" });
       } else if (ActivityType == "s" || ActivityType == "S") {
-         this.bot.user.setActivity({ name = ActivityName, type = "STREAMING" });
+         this.bot.user.setActivity({ name = `${ActivityName}`, type = "STREAMING" });
       }
    }
 
@@ -37,7 +37,7 @@ class Bot {
     * Logins to the bot!
     * @returns 
     */
-   Login() {
+   Login = function () {
       this.bot.login(this.Token)
       console.log(this.bot.user.tag + " Has logged in! Successfully!");
       console.log("Watching: " + this.bot.guilds.cache.size + " Servers");
@@ -50,7 +50,7 @@ class Bot {
     * @param {*} Command_Function 
     * @returns
     */
-   CreateCommand(Command = String, Command_Function = Function) {
+   CreateCommand = function (Command = String, Command_Function = Function) {
       this.bot.on("message", async (message) => {
          if (message.content = this.Prefix + "" + Command) {
             if (!this.Commands.has(Command)) {
@@ -67,7 +67,7 @@ class Bot {
     * @param {*} Command 
     * @returns 
     */
-   RemoveCommand(Command = String) {
+   RemoveCommand = function (Command = String) {
       if (this.Commands.has(Command)) {
          return this.Commands.delete(Command);
       } else {
@@ -80,7 +80,7 @@ class Bot {
     * @param {*} AvatarFile 
     * @returns 
     */
-   ChangeBotAvatar(AvatarFile) {
+   ChangeBotAvatar = function (AvatarFile) {
       this.bot.user.setAvatar(AvatarFile);
       return true;
    }
@@ -89,7 +89,7 @@ class Bot {
     * Shows how many guilds the bot joined
     * @returns 
     */
-   LogJoinedGuilds() {
+   LogJoinedGuilds = function () {
       console.log("Guilds the bot joined: " + this.bot.guilds.cache.size);
       return true;
    }
@@ -98,7 +98,7 @@ class Bot {
     * Shows how many members the bot is watching
     * @returns 
     */
-   LogBotWatchingUsers() {
+   LogBotWatchingUsers = function () {
       console.log("Watching Users: " + this.bot.users.cache.size)
       return true
    }
@@ -109,7 +109,7 @@ class Bot {
     * @param {*} NewUsername 
     * @returns 
     */
-   ChangeBotUsername(NewUsername = String) {
+   ChangeBotUsername = function (NewUsername = String) {
       this.bot.user.setUsername(NewUsername);
       return true;
    }
@@ -122,7 +122,7 @@ class Bot {
     * @param {*} NewUsername 
     * @returns 
     */
-   SafeChangeUsername(OldUsername = String, NewUsername = String) {
+   SafeChangeUsername = function (OldUsername = String, NewUsername = String) {
       if (OldUsername === this.OldUsername) {
          this.bot.user.setUsername(NewUsername);
          return true;
@@ -135,7 +135,7 @@ class Bot {
     * Checks if the bot is Verified or No
     * @returns 
     */
-   CheckBotVerified() {
+   CheckBotVerified = function () {
       if (this.bot.user.verified) {
          console.log("The Bot is Verified On Discord!");
          return true;
@@ -149,7 +149,7 @@ class Bot {
     * Gets the bot Avatar as a URL
     * @returns 
     */
-   GetBotAvatarURL() {
+   GetBotAvatarURL = function () {
       return this.bot.user.avatarURL()
    }
 
@@ -157,7 +157,7 @@ class Bot {
     * Gets the bot Avatar as a Dynamic Image URL
     * @returns 
     */
-   GetBotAvatarURLDynamic() {
+   GetBotAvatarURLDynamic = function () {
       return this.bot.user.avatarURL({ dynamic = true })
    }
 }
