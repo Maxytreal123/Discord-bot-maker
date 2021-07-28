@@ -1,165 +1,173 @@
 'use strict';
 
 const { Client, Collection } = require("discord.js");
-const { DiscordBotMakerError } = require("./src/index")
+const { DiscordBotMakerError } = require("./src/index");
 
-class Bot {
-   constructor(Token = String, Prefix = String) {
-      this.bot = new Client();
-      this.Token = Token;
-      this.Prefix = Prefix;
-      this.Commands = new Collection();
-      this.commandsSize = 0;
+const bot = new Client();
+const Commands = new Collection();
+var commands = 0;
 
-      // Checking old User name
-      this.OldUsername = this.bot.user.tag
-   }
-
-   /**
-    * Changes the Activity Name and the Activity Type
-    * Activity Types: w - Watching, p - Playing, s - Streaming
-    * @param {*} ActivityName 
-    * @param {*} ActivityType 
-    */
-   SetActivity = function (ActivityName = String, ActivityType = String) {
-      if (!ActivityType) {
-         throw new DiscordBotMakerError("Cannot Find Activity Type!");
-      } else if (ActivityName == "w" || ActivityType == "W") {
-         this.bot.user.setActivity({ name = `${ActivityName}`, type = "WATCHING" });
-      } else if (ActivityType == "p" || ActivityType == "P") {
-         this.bot.user.setActivity({ name = `${ActivityName}`, type = "PLAYING" });
-      } else if (ActivityType == "s" || ActivityType == "S") {
-         this.bot.user.setActivity({ name = `${ActivityName}`, type = "STREAMING" });
-      }
-   }
-
-   /**
-    * Logins to the bot!
-    * @returns 
-    */
-   Login = function () {
-      this.bot.login(this.Token)
-      console.log(this.bot.user.tag + " Has logged in! Successfully!");
-      console.log("Watching: " + this.bot.guilds.cache.size + " Servers");
-      return true;
-   }
-
-   /**
-    * Creates a Command
-    * @param {*} Command 
-    * @param {*} Command_Function 
-    * @returns
-    */
-   CreateCommand = function (Command = String, Command_Function = Function) {
-      this.bot.on("message", async (message) => {
-         if (message.content = this.Prefix + "" + Command) {
-            if (!this.Commands.has(Command)) {
-               this.commands += 1;
-               this.Commands.set(Command, this.commands);
-               return Command_Function(message);
-            }
-         }
-      })
-   }
-
-   /**
-    * Removes a Command
-    * @param {*} Command 
-    * @returns 
-    */
-   RemoveCommand = function (Command = String) {
-      if (this.Commands.has(Command)) {
-         return this.Commands.delete(Command);
-      } else {
-         throw new DiscordBotMakerError("Cannot Find Command, Make Sure to type the same command like: help or create it by doing CreateCommand('help', function(message) {})");
-      }
-   }
-
-   /**
-    * Changes the Avatar of the bot
-    * @param {*} AvatarFile 
-    * @returns 
-    */
-   ChangeBotAvatar = function (AvatarFile) {
-      this.bot.user.setAvatar(AvatarFile);
-      return true;
-   }
-
-   /**
-    * Shows how many guilds the bot joined
-    * @returns 
-    */
-   LogJoinedGuilds = function () {
-      console.log("Guilds the bot joined: " + this.bot.guilds.cache.size);
-      return true;
-   }
-
-   /**
-    * Shows how many members the bot is watching
-    * @returns 
-    */
-   LogBotWatchingUsers = function () {
-      console.log("Watching Users: " + this.bot.users.cache.size)
-      return true
-   }
-
-   /**
-    * Chanages the bot username to a new Username
-    * For Safe use Make Sure to use SafeChangeUsername(OldUsername, NewUsername)
-    * @param {*} NewUsername 
-    * @returns 
-    */
-   ChangeBotUsername = function (NewUsername = String) {
-      this.bot.user.setUsername(NewUsername);
-      return true;
-   }
-
-   /**
-    * Safe Changes the username of the bot
-    * You need the username of the bot and the tag: testbot#3123
-    * If you wanna easy use it use ChangeBotUsername(NewUsername)
-    * @param {*} OldUsername 
-    * @param {*} NewUsername 
-    * @returns 
-    */
-   SafeChangeUsername = function (OldUsername = String, NewUsername = String) {
-      if (OldUsername === this.OldUsername) {
-         this.bot.user.setUsername(NewUsername);
-         return true;
-      } else {
-         throw new DiscordBotMakerError("The Old Bot Username is invaild! Please type the old Bot username!");
-      }
-   }
-
-   /**
-    * Checks if the bot is Verified or No
-    * @returns 
-    */
-   CheckBotVerified = function () {
-      if (this.bot.user.verified) {
-         console.log("The Bot is Verified On Discord!");
-         return true;
-      } else {
-         console.log("The Bot is not Verified on Discord!");
-         return false;
-      }
-   }
-
-   /**
-    * Gets the bot Avatar as a URL
-    * @returns 
-    */
-   GetBotAvatarURL = function () {
-      return this.bot.user.avatarURL()
-   }
-
-   /**
-    * Gets the bot Avatar as a Dynamic Image URL
-    * @returns 
-    */
-   GetBotAvatarURLDynamic = function () {
-      return this.bot.user.avatarURL({ dynamic = true })
+/**
+ * Changes the Activity Name and the Activity Type
+ * Activity Types: w - Watching, p - Playing, s - Streaming
+ * @param {*} ActivityName 
+ * @param {*} ActivityType 
+ */
+module.exports.SetActivity = function(ActivityName, ActivityType) {
+   if (!ActivityType) {
+      throw new DiscordBotMakerError("Cannot Find Activity Type!");
+   } else if (ActivityName == "w" || ActivityType == "W") {
+      bot.user.setActivity({ name = `${ActivityName}`, type = "WATCHING" });
+   } else if (ActivityType == "p" || ActivityType == "P") {
+      bot.user.setActivity({ name = `${ActivityName}`, type = "PLAYING" });
+   } else if (ActivityType == "s" || ActivityType == "S") {
+      bot.user.setActivity({ name = `${ActivityName}`, type = "STREAMING" });
    }
 }
 
-module.exports = Bot
+/**
+ * Logins to the bot!
+ * @returns 
+ */
+module.exports.Login = function (Token) {
+   bot.login(Token)
+   console.log(bot.user.tag + " Has logged in! Successfully!");
+   console.log("Watching: " + bot.guilds.cache.size + " Servers");
+   return true;
+}
+
+/**
+ * Creates a Command
+ * @param {*} Command 
+ * @param {*} Command_Function 
+ * @returns
+ */
+module.exports.CreateCommand = function(Command, Command_Function) {
+   bot.on("message", async (message) => {
+      if (message.content = Prefix + "" + Command) {
+         if (!Commands.has(Command)) {
+            commands += 1;
+            Commands.set(Command, Command_Function);
+            return;
+         } else {
+            const command = Commands.get(Command);
+            command(message);
+         }
+      }
+   })
+}
+
+/**
+ * Removes a Command
+ * @param {*} Command 
+ * @returns 
+ */
+module.exports.RemoveCommand = function(Command) {
+   if (Commands.has(Command)) {
+      return Commands.delete(Command);
+   } else {
+      throw new DiscordBotMakerError("Cannot Find Command, Make Sure to type the same command like: help or create it by doing CreateCommand('help', function(message) {})");
+   }
+}
+
+/**
+ * Changes the Avatar of the bot
+ * @param {*} AvatarFile 
+ * @returns 
+ */
+module.exports.ChangeBotAvatar = function(AvatarFile) {
+   bot.user.setAvatar(AvatarFile);
+   return true;
+}
+
+/**
+ * Shows how many guilds the bot joined
+ * @returns 
+ */
+module.exports.LogJoinedGuilds = function() {
+   console.log("Guilds the bot joined: " + bot.guilds.cache.size);
+   return true;
+}
+
+/**
+ * Shows how many members the bot is watching
+ * @returns 
+ */
+module.exports.LogBotWatchingUsers = function() {
+   console.log("Watching Users: " + bot.users.cache.size);
+   return true;
+}
+
+/**
+ * Chanages the bot username to a new Username
+ * For Safe use Make Sure to use SafeChangeUsername(OldUsername, NewUsername)
+ * @param {*} NewUsername 
+ * @returns 
+ */
+module.exports.ChangeBotUsername = function(NewUsername) {
+   bot.user.setUsername(NewUsername);
+   return true;
+}
+
+/**
+ * Safe Changes the username of the bot
+ * You need the username of the bot and the tag: testbot#3123
+ * If you wanna easy use it use ChangeBotUsername(NewUsername)
+ * @param {*} OldUsername 
+ * @param {*} NewUsername 
+ * @returns 
+ */
+module.exports.SafeChangeBotUsername = function(OldUsername, NewUsername) {
+   if (OldUsername === OldUsername) {
+      bot.user.setUsername(NewUsername);
+      return true;
+   } else {
+      throw new DiscordBotMakerError("The Old Bot Username is invaild! Please type the old Bot username!");
+   }
+}
+
+/**
+ * Checks if the bot is Verified or No
+ * @returns 
+ */
+module.exports.CheckBotVerified = function() {
+   if (bot.user.verified) {
+      console.log("The Bot is Verified On Discord!");
+      return true;
+   } else {
+      console.log("The Bot is not Verified on Discord!");
+      return false;
+   }
+}
+
+/**
+ * Gets the bot Avatar as a URL
+ * @returns 
+ */
+module.exports.GetBotAvatarURL = function() {
+   return bot.user.avatarURL();
+}
+
+/**
+ * Gets the bot Avatar as a Dynamic Image URL
+ * @returns 
+ */
+module.exports.GetBotAvatarURLDynamic = function() {
+   return bot.user.avatarURL({ dynamic = true });
+}
+
+/**
+ * Check if the bot has disconnect when first running or while running or no
+ * @returns
+ */
+module.exports.BotDisconnected = function() {
+   return bot.on("disconnect", async () => {  console.log("Bot Disconnected") });
+}
+
+/**
+ * Checks if the bot has connected when first running or no
+ * @returns 
+ */
+module.exports.BotConnected = function() {
+   return bot.on("ready", async () => { console.log("Bot Connected!") });
+}
