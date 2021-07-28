@@ -1,7 +1,6 @@
 'use strict';
 
-const { Client, Collection } = require("discord.js");
-const { DiscordBotMakerError } = require("./src/index");
+const { Client, Collection, DiscordAPIError } = require("discord.js");
 
 const bot = new Client();
 const Commands = new Collection();
@@ -52,7 +51,7 @@ module.exports.RemoveCommand = function(Command) {
    if (Commands.has(Command)) {
       return Commands.delete(Command);
    } else {
-      throw new DiscordBotMakerError("Cannot Find Command, Make Sure to type the same command like: help or create it by doing CreateCommand('help', function(message) {})");
+      throw new DiscordAPIError("Cannot Find Command, Make Sure to type the same command like: help or create it by doing CreateCommand('help', function(message) {})");
    }
 }
 
@@ -108,7 +107,7 @@ module.exports.SafeChangeBotUsername = function(OldUsername, NewUsername) {
       bot.user.setUsername(NewUsername);
       return true;
    } else {
-      throw new DiscordBotMakerError("The Old Bot Username is invaild! Please type the old Bot username!");
+      throw new DiscordAPIError("The Old Bot Username is invaild! Please type the old Bot username!");
    }
 }
 
