@@ -4,7 +4,6 @@ const { Client, Collection, DiscordAPIError } = require("discord.js");
 
 const bot = new Client();
 const Commands = new Collection();
-var commands = 0;
 
 /**
  * Logins to the bot!
@@ -58,7 +57,7 @@ module.exports.CreateEmbedCommand = function(Prefix, Command, Title, Color, Desc
 
       if (message.content === Prefix + "" + Command) {
          if (!Commands.has(Command)) {
-            commands.set(Command, {
+            Commands.set(Command, {
                color: Color,
                title: Title,
                url: '',

@@ -1,6 +1,6 @@
 {
   "name": "discord-bot-maker-v1",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "a Simple Discord bot maker that can make bots without stealing anything",
   "main": "index.js",
   "dependencies": {
