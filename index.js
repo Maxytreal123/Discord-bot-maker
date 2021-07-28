@@ -8,29 +8,12 @@ const Commands = new Collection();
 var commands = 0;
 
 /**
- * Changes the Activity Name and the Activity Type
- * Activity Types: w - Watching, p - Playing, s - Streaming
- * @param {*} ActivityName 
- * @param {*} ActivityType 
- */
-module.exports.SetActivity = function(ActivityName, ActivityType) {
-   if (!ActivityType) {
-      throw new DiscordBotMakerError("Cannot Find Activity Type!");
-   } else if (ActivityName == "w" || ActivityType == "W") {
-      bot.user.setActivity({ name = `${ActivityName}`, type = "WATCHING" });
-   } else if (ActivityType == "p" || ActivityType == "P") {
-      bot.user.setActivity({ name = `${ActivityName}`, type = "PLAYING" });
-   } else if (ActivityType == "s" || ActivityType == "S") {
-      bot.user.setActivity({ name = `${ActivityName}`, type = "STREAMING" });
-   }
-}
-
-/**
  * Logins to the bot!
  * @returns 
  */
 module.exports.Login = function (Token) {
    bot.login(Token)
+   bot.user.setActivity({ name: "Discord Bot Maker - " + bot.user.username + " Bot", type: "WATCHING" })
    console.log(bot.user.tag + " Has logged in! Successfully!");
    console.log("Watching: " + bot.guilds.cache.size + " Servers");
    return true;
@@ -48,6 +31,9 @@ module.exports.CreateCommand = function(Command, Command_Function) {
          if (!Commands.has(Command)) {
             commands += 1;
             Commands.set(Command, Command_Function);
+            
+            Command_Function(message)
+
             return;
          } else {
             const command = Commands.get(Command);
