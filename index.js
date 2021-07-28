@@ -5,6 +5,10 @@ const { Client, Collection, DiscordAPIError } = require("discord.js");
 const bot = new Client();
 const Commands = new Collection();
 
+bot.on("ready", async () => {
+   bot.user.setActivity({ name: "Discord Bot Maker - " + bot.user.tag + " Bot", type: "WATCHING" })
+})
+
 /**
  * Logins to the bot!
  * @returns 
