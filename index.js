@@ -12,7 +12,6 @@ var commands = 0;
  */
 module.exports.Login = function (Token) {
    bot.login(Token)
-   bot.user.setActivity({ name: "Discord Bot Maker - " + bot.user.username + " Bot", type: "WATCHING" })
    console.log(bot.user.tag + " Has logged in! Successfully!");
    console.log("Watching: " + bot.guilds.cache.size + " Servers");
    return true;
