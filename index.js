@@ -5,6 +5,7 @@ const { Client, Collection, DiscordAPIError } = require("discord.js");
 const bot = new Client();
 const Commands = new Collection();
 var commands = 0;
+const oldbotusername = bot.user.tag
 
 /**
  * Logins to the bot!
@@ -86,11 +87,11 @@ module.exports.ChangeBotUsername = function(NewUsername) {
  * @returns 
  */
 module.exports.SafeChangeBotUsername = function(OldUsername, NewUsername) {
-   if (OldUsername === OldUsername) {
+   if (OldUsername === oldbotusername) {
       bot.user.setUsername(NewUsername);
       return true;
    } else {
-      throw new DiscordAPIError("The Old Bot Username is invaild! Please type the old Bot username!");
+      throw new DiscordAPIError("The Old Bot Username is invaild! Please type the old Bot username With the bot tag!");
    }
 }
 
