@@ -12,8 +12,7 @@ var commands = 0;
  */
 module.exports.Login = function (Token) {
    bot.login(Token)
-   console.log(bot.user.tag + " Has logged in! Successfully!");
-   console.log("Watching: " + bot.guilds.cache.size + " Servers");
+   console.log("Bot Has logged in! Successfully!");
    return true;
 }
 
@@ -61,24 +60,6 @@ module.exports.RemoveCommand = function(Command) {
  */
 module.exports.ChangeBotAvatar = function(AvatarFile) {
    bot.user.setAvatar(AvatarFile);
-   return true;
-}
-
-/**
- * Shows how many guilds the bot joined
- * @returns 
- */
-module.exports.LogJoinedGuilds = function() {
-   console.log("Guilds the bot joined: " + bot.guilds.cache.size);
-   return true;
-}
-
-/**
- * Shows how many members the bot is watching
- * @returns 
- */
-module.exports.LogBotWatchingUsers = function() {
-   console.log("Watching Users: " + bot.users.cache.size);
    return true;
 }
 
