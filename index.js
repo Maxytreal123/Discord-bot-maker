@@ -22,7 +22,7 @@ module.exports.Login = function (Token) {
  * @param {*} Command_Function 
  * @returns
  */
-module.exports.CreateCommand = function(Command, Command_Function) {
+module.exports.CreateCommand = function(Prefix, Command, Command_Function) {
    bot.on("message", async (message) => {
       if (message.content = Prefix + "" + Command) {
          if (!Commands.has(Command)) {
