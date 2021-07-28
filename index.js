@@ -5,7 +5,6 @@ const { Client, Collection, DiscordAPIError } = require("discord.js");
 const bot = new Client();
 const Commands = new Collection();
 var commands = 0;
-const oldbotusername = bot.user.tag
 
 /**
  * Logins to the bot!
@@ -27,7 +26,7 @@ module.exports.CreateCommand = function(Prefix, Command, Command_Function) {
    bot.on("message", async (message) => {
       if (message.author.bot) return;
 
-      if (message.content = Prefix + "" + Command) {
+      if (message.content === Prefix + "" + Command) {
          if (!Commands.has(Command)) {
             commands += 1;
             Commands.set(Command, Command_Function);
@@ -45,6 +44,68 @@ module.exports.CreateCommand = function(Prefix, Command, Command_Function) {
 }
 
 /**
+ * Makes a Embed With a Command
+ * @param {*} Prefix 
+ * @param {*} Command 
+ * @param {*} Title 
+ * @param {*} Color 
+ * @param {*} Description 
+ * @param {*} Author 
+ */
+module.exports.CreateEmbedCommand = function(Prefix, Command, Title, Color, Description, Author) {
+   bot.on("message", async (message) => {
+      if (message.author.bot) return
+
+      if (message.content === Prefix + "" + Command) {
+         if (!Commands.has(Command)) {
+            commands.set(Command, {
+               color: Color,
+               title: Title,
+               url: '',
+               author: {
+                  name: Author,
+                  icon_url: `${message.author.avatarURL({ dynamic: true })}`,
+                  url: '',
+               },
+               description: Description,
+               thumbnail: {
+                  url: `${message.author.avatarURL({ dynamic: true })}`,
+               },
+               fields: [],
+               image: {},
+               timestamp: new Date(),
+               footer: {},
+            })
+            
+            const Embed = {
+               color: Color,
+               title: Title,
+               url: '',
+               author: {
+                  name: Author,
+                  icon_url: `${message.author.avatarURL({ dynamic: true })}`,
+                  url: '',
+               },
+               description: Description,
+               thumbnail: {
+                  url: `${message.author.avatarURL({ dynamic: true })}`,
+               },
+               fields: [],
+               image: {},
+               timestamp: new Date(),
+               footer: {},
+            }
+            return message.channel.send({ embed: Embed })
+         } else {
+            const Embed = Commands.get(Command)
+
+            return message.channel.send({ embed: Embed })
+         }
+      }
+   })
+} 
+
+/**
  * Removes a Command
  * @param {*} Command 
  * @returns 
@@ -54,6 +115,19 @@ module.exports.RemoveCommand = function(Command) {
       return Commands.delete(Command);
    } else {
       throw new DiscordAPIError("Cannot Find Command, Make Sure to type the same command like: help or create it by doing CreateCommand('help', function(message) {})");
+   }
+}
+
+/**
+ * Checks a if the command is added or no, it will return to the command value if its added!
+ * @param {*} Command 
+ * @returns 
+ */
+module.exports.hasCommand = function(Command) {
+   if (Commands.has(Command)) {
+      return Commands.get(Command)
+   } else {
+      throw new DiscordAPIError("Cannot Find Command! Please Check that if the command is created!")
    }
 }
 
@@ -76,23 +150,6 @@ module.exports.ChangeBotAvatar = function(AvatarFile) {
 module.exports.ChangeBotUsername = function(NewUsername) {
    bot.user.setUsername(NewUsername);
    return true;
-}
-
-/**
- * Safe Changes the username of the bot
- * You need the username of the bot and the tag: testbot#3123
- * If you wanna easy use it use ChangeBotUsername(NewUsername)
- * @param {*} OldUsername 
- * @param {*} NewUsername 
- * @returns 
- */
-module.exports.SafeChangeBotUsername = function(OldUsername, NewUsername) {
-   if (OldUsername === oldbotusername) {
-      bot.user.setUsername(NewUsername);
-      return true;
-   } else {
-      throw new DiscordAPIError("The Old Bot Username is invaild! Please type the old Bot username With the bot tag!");
-   }
 }
 
 /**
