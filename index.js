@@ -31,7 +31,6 @@ module.exports.CreateCommand = function(Prefix, Command, Command_Function) {
 
       if (message.content === Prefix + "" + Command) {
          if (!Commands.has(Command)) {
-            commands += 1;
             Commands.set(Command, Command_Function);
             
             Command_Function(message);
