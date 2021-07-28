@@ -24,17 +24,20 @@ module.exports.Login = function (Token) {
  */
 module.exports.CreateCommand = function(Prefix, Command, Command_Function) {
    bot.on("message", async (message) => {
+      if (message.author.bot) return;
+
       if (message.content = Prefix + "" + Command) {
          if (!Commands.has(Command)) {
             commands += 1;
             Commands.set(Command, Command_Function);
             
-            Command_Function(message)
+            Command_Function(message);
 
             return;
          } else {
             const command = Commands.get(Command);
             command(message);
+            return;
          }
       }
    })
