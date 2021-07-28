@@ -135,14 +135,6 @@ module.exports.GetBotAvatarURL = function() {
 }
 
 /**
- * Gets the bot Avatar as a Dynamic Image URL
- * @returns 
- */
-module.exports.GetBotAvatarURLDynamic = function() {
-   return bot.user.avatarURL({ dynamic = true });
-}
-
-/**
  * Check if the bot has disconnect when first running or while running or no
  * @returns
  */
