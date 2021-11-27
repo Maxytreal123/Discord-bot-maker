@@ -7,8 +7,12 @@ const bot = new Client();
 const Commands = new Collection();
 
 bot.on("ready", async () => {
-   bot.user.setActivity({ name: "Discord Bot Maker - " + bot.user.tag + " Bot", type: "WATCHING" })
+   bot.user.setActivity({ name: "Discord Bot Maker - " + bot.user.tag + " Bot", type: "WATCHING" });
 })
+
+module.exports.log = function(message) {
+   console.log("[LOG]: " + message);
+}
 
 /**
  * Logins to the bot!
@@ -40,8 +44,9 @@ module.exports.Login = function (Token) {
 
 /**
  * Creates a Command
- * @param {*} Command 
- * @param {*} Command_Function 
+ * @param {string} Prefix
+ * @param {string} Command 
+ * @param {discord.Message} Command_Function 
  * @returns
  */
 module.exports.CreateCommand = function(Prefix, Command, Command_Function) {
@@ -52,6 +57,7 @@ module.exports.CreateCommand = function(Prefix, Command, Command_Function) {
          if (!Commands.has(Command)) {
             Commands.set(Command, Command_Function);
             
+            this.log(`Command Created ${Prefix}${Command}`);
             Command_Function(message);
 
             return;
@@ -66,12 +72,12 @@ module.exports.CreateCommand = function(Prefix, Command, Command_Function) {
 
 /**
  * Makes a Embed With a Command
- * @param {*} Prefix 
- * @param {*} Command 
- * @param {*} Title 
- * @param {*} Color 
- * @param {*} Description 
- * @param {*} Author 
+ * @param {string} Prefix 
+ * @param {string} Command 
+ * @param {string} Title 
+ * @param {string} Color 
+ * @param {string} Description 
+ * @param {string} Author 
  */
 module.exports.CreateEmbedCommand = function(Prefix, Command, Title, Color, Description, Author) {
    bot.on("message", async (message) => {
@@ -116,6 +122,8 @@ module.exports.CreateEmbedCommand = function(Prefix, Command, Title, Color, Desc
                timestamp: new Date(),
                footer: {},
             }
+
+            this.log(`Embed Created: ${Embed}`);
             return message.channel.send({ embed: Embed });
          } else {
             const Embed = Commands.get(Command);
@@ -128,7 +136,7 @@ module.exports.CreateEmbedCommand = function(Prefix, Command, Title, Color, Desc
 
 /**
  * Removes a Command
- * @param {*} Command 
+ * @param {string} Command 
  * @returns 
  */
 module.exports.RemoveCommand = function(Command) {
@@ -141,7 +149,7 @@ module.exports.RemoveCommand = function(Command) {
 
 /**
  * Checks a if the command is added or no, it will return to the command value if its added!
- * @param {*} Command 
+ * @param {string} Command 
  * @returns 
  */
 module.exports.hasCommand = function(Command) {
@@ -154,22 +162,24 @@ module.exports.hasCommand = function(Command) {
 
 /**
  * Changes the Avatar of the bot
- * @param {*} AvatarFile 
+ * @param {string} AvatarFile 
  * @returns 
  */
 module.exports.ChangeBotAvatar = function(AvatarFile) {
    bot.user.setAvatar(AvatarFile);
+   this.log("Changed User Avatar, Path: " + AvatarFile);
    return true;
 }
 
 /**
  * Chanages the bot username to a new Username
  * For Safe use Make Sure to use SafeChangeUsername(OldUsername, NewUsername)
- * @param {*} NewUsername 
+ * @param {string} NewUsername 
  * @returns 
  */
 module.exports.ChangeBotUsername = function(NewUsername) {
    bot.user.setUsername(NewUsername);
+   this.log("Changed Username: " + bot.user.tag);
    return true;
 }
 
@@ -209,6 +219,16 @@ module.exports.BotDisconnected = function() {
  */
 module.exports.BotConnected = function() {
    return bot.on("ready", async () => { console.log("Bot Connected!") });
+}
+
+module.exports.Bot = class Bot {
+   constructor(token) {
+      this.Prefix = Prefix;
+   }
+
+   login() {
+      bot.login(this.token);
+   }
 }
 
 module.exports.discordjs = discord;
